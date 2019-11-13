@@ -2,6 +2,10 @@ from django.contrib import admin
 from geostore.models import Layer, Feature, LayerSchemaProperty, ArrayObjectProperty
 
 
+class ArrayObjectPropertyAdminInline(admin.TabularInline):
+    model = ArrayObjectProperty
+
+
 class LayerSchemaPropertyAdminInline(admin.TabularInline):
     model = LayerSchemaProperty
 
@@ -23,6 +27,10 @@ class FeatureExtraGeomInline(admin.TabularInline):
     model = FeatureExtraGeom
 
 
+class LayerSchemaPropertyAdmin(admin.ModelAdmin):
+    inlines = [ArrayObjectPropertyAdminInline, ]
+
+
 @admin.register(Layer)
 class LayerAdmin(admin.ModelAdmin):
     inlines = [LayerSchemaPropertyAdminInline]
@@ -34,3 +42,4 @@ class FeatureAdmin(OSMGeoAdmin):
 
 
 admin.site.register(ArrayObjectProperty)
+admin.site.register(LayerSchemaProperty, LayerSchemaPropertyAdmin)
