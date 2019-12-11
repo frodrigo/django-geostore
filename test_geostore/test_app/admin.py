@@ -1,45 +1,37 @@
 from django.contrib import admin
-from geostore.models import Layer, Feature, LayerSchemaProperty, ArrayObjectProperty
+from geostore import models
+from django.contrib.gis.admin import OSMGeoAdmin
 
 
 class ArrayObjectPropertyAdminInline(admin.TabularInline):
-    model = ArrayObjectProperty
+    model = models.ArrayObjectProperty
 
 
 class LayerSchemaPropertyAdminInline(admin.TabularInline):
-    model = LayerSchemaProperty
-
-from django.contrib.gis.admin import OSMGeoAdmin
-
-from geostore.models import Layer, Feature, LayerExtraGeom, FeatureExtraGeom
+    model = models.LayerSchemaProperty
 
 
 class LayerExtraGeomInline(admin.TabularInline):
-    model = LayerExtraGeom
-
-
-@admin.register(Layer)
-class LayerAdmin(admin.ModelAdmin):
-    inlines = [LayerExtraGeomInline]
+    model = models.LayerExtraGeom
 
 
 class FeatureExtraGeomInline(admin.TabularInline):
-    model = FeatureExtraGeom
+    model = models.FeatureExtraGeom
 
 
 class LayerSchemaPropertyAdmin(admin.ModelAdmin):
     inlines = [ArrayObjectPropertyAdminInline, ]
 
 
-@admin.register(Layer)
+@admin.register(models.Layer)
 class LayerAdmin(admin.ModelAdmin):
-    inlines = [LayerSchemaPropertyAdminInline]
+    inlines = [LayerExtraGeomInline, LayerSchemaPropertyAdminInline]
 
 
-@admin.register(Feature)
+@admin.register(models.Feature)
 class FeatureAdmin(OSMGeoAdmin):
     inlines = [FeatureExtraGeomInline]
 
 
-admin.site.register(ArrayObjectProperty)
-admin.site.register(LayerSchemaProperty, LayerSchemaPropertyAdmin)
+admin.site.register(models.ArrayObjectProperty)
+admin.site.register(models.LayerSchemaProperty, LayerSchemaPropertyAdmin)
