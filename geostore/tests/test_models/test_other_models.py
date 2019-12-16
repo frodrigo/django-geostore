@@ -2,12 +2,12 @@ from django.test import TestCase
 
 from geostore import GeometryTypes
 from geostore.models import LayerExtraGeom
-from geostore.tests.factories import LayerSchemaFactory
+from geostore.tests.factories import LayerWithSchemaFactory
 
 
 class LayerExtraGeomModelTestCase(TestCase):
     def setUp(self):
-        self.layer_schema = LayerSchemaFactory()
+        self.layer_schema = LayerWithSchemaFactory()
         self.extra_layer = LayerExtraGeom.objects.create(layer=self.layer_schema,
                                                          geom_type=GeometryTypes.Point,
                                                          title='Test')
